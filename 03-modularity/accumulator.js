@@ -23,3 +23,12 @@ function accumulatorFactory(initialValue){
 }
 
 module.exports = accumulatorFactory;
+
+/*
+var accFactory = require('./accumulator');
+
+var acc = accFactory();
+
+acc.
+
+*/
