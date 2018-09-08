@@ -7,7 +7,7 @@ function isStatic(resource){
 	return staticExtns.indexOf(path.extname(resource)) >= 0;
 }
 
-module.exports = function(req, res){
+module.exports = function(req, res, next){
 	if (isStatic(req.urlObj.pathname)){
 		var resourceName = path.join(__dirname, req.urlObj.pathname);
 		if (!fs.existsSync(resourceName)){
@@ -24,6 +24,9 @@ module.exports = function(req, res){
 		stream.on('end', function(){
 			console.log('[@serveStatic] - ending res');
 			res.end();
+			next();
 		})
+	} else {
+		next();
 	}
 }
