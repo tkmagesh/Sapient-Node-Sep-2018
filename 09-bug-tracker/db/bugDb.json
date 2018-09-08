@@ -1,0 +1,4 @@
+[
+	{"id" : 1, "name" : "Server communication failure", "isClosed" : false},
+	{"id" : 2, "name" : "User actions not recognized", "isClosed" : true}
+]

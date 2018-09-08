@@ -1,10 +1,12 @@
-var list = [
-	{id : 1, name : "Server communication failure", isClosed : false},
-	{id : 2, name : "User actions not recognized", isClosed : true}
-];
+var bugDb = require('./bugDb');
 
-function getAll(){
-	return list;
+var list = [];
+
+function getAll(callback){
+	bugDb.read(function(err, bugs){
+		list = [];
+		callback(err, bugs);
+	});
 }
 
 function addNew(newBugData){

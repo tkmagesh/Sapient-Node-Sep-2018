@@ -5,7 +5,14 @@ var bugService = require('../services/bugService');
 
 
 router.get('/', function(req, res, next) {  
-  res.json(bugService.getAll());
+  //res.json(bugService.getAll());
+  bugService.getAll(function(err, bugs){
+  	if (err){
+  		res.status(500).end();
+  	} else {
+  		res.json(bugs);
+  	}
+  })
 });
 
 
