@@ -2,11 +2,13 @@ var bugDb = require('./bugDb');
 
 var list = [];
 
-function getAll(callback){
-	bugDb.read(function(err, bugs){
+function getAll(/*callback*/){
+	/*bugDb.read(function(err, bugs){
 		list = [];
 		callback(err, bugs);
-	});
+	});*/
+
+	return bugDb.read();
 }
 
 function addNew(newBugData){

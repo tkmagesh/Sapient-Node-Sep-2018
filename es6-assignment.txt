@@ -1,0 +1,13 @@
+http://es6-features.org
+
+let
+const
+array destructuring
+rest operator with array
+spread operator with array
+object destructuring
+rest operator with object
+spread operator with object
+default arguments
+arrow functions
+classes

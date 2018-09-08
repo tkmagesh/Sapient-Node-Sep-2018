@@ -3,14 +3,13 @@ var fs = require('fs'),
 
 var dbFile = path.join(__dirname, '../db/bugDb.json');
 
-function read(callback){
-	fs.readFile(dbFile, function(err, fileContents){
-		let data = JSON.parse(fileContents);
-		if (err){
-			return callback(err, null);
-		} else {
-			return callback(null, data);
-		}
+function read(){
+	return new Promise(function(resolveFn, rejectFn){
+		fs.readFile(dbFile, function(err, fileContents){
+			if (err) return rejectFn(err);
+			let data = JSON.parse(fileContents);
+			return resolveFn(data);
+		});
 	});
 }
 
