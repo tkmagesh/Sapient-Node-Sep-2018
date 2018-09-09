@@ -37,7 +37,7 @@ router.post('/', function(req, res, next){
 
 
 router.put('/:id', function(req, res, next){
-	var bugIdToUpdate = parseInt(req.params.id);
+	var bugIdToUpdate = req.params.id;
 	bugService
 		.update(bugIdToUpdate, req.body)
 		.then(function(updatedBug){
@@ -50,7 +50,7 @@ router.put('/:id', function(req, res, next){
 
 
 router.delete('/:id', function(req, res, next){
-	var bugIdToDelete = parseInt(req.params.id);
+	var bugIdToDelete = req.params.id;
 	bugService
 		.remove(bugIdToDelete)
 		.then(function(deleteResult){

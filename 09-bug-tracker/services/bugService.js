@@ -1,93 +1,60 @@
-var bugDb = require('./bugDb');
+//refactoring required to 'db.js' & '/models/Bug.js'
+let mongoose = require('mongoose');
 
-var list = [];
+const Schema = mongoose.Schema;
+const ObjectId = Schema.ObjectId;
 
-bugDb
-	.read()
-	.then(function(bugs){
-		list = bugs;
-	}); 
+const conn = mongoose.createConnection('mongodb://localhost:27017/learning');
 
-function getAll(/*callback*/){
-	/*bugDb.read(function(err, bugs){
-		list = [];
-		callback(err, bugs);
+const BugModel = new Schema({
+	name : String,
+	isClosed : Boolean,
+});
+
+const Bug = conn.model('bugs', BugModel);
+
+
+function getAll(){
+	/*return new Promise(function(resolveFn, rejectFn){
+		Bug.find({}, function(err, bugs){
+			if (!err)
+				return resolveFn(bugs);
+			console.log(err)
+			rejectFn(err);
+		});	
 	});*/
 
-	/*return bugDb
-		.read()
-		.then(function(bugs){
-			list = bugs;
-			return list;
-		});*/
-
-	return Promise.resolve(list);
+	return Bug.find({});
 }
 
 function addNew(newBugData){
-	/*var newBugId = list.reduce(function(result, bug){
-		return result > bug.id ? result : bug.id;
-	}, 0) + 1;*/
+	let newBug = new Bug();
+	newBug.name = newBugData.name;
+	newBug.isClosed = newBugData.isClosed;
+	return newBug.save();
+}
 
-	var newBugId = list.reduce((result, bug) => result > bug.id ? result : bug.id, 0) + 1;
-	newBugData.id = newBugId;
-	list.push(newBugData);
-	/*return bugDb
-		.save(list)
-		.then(function(){
-			return newBugData;
-		});*/
-	return bugDb
-		.save(list)
-		.then(() => newBugData);
+//to be fixed
+function update(bugIdToUpdate, bugData){
+	return new Promise(function(resolveFn, rejectFn){
+		Bug
+			.findByIdAndUpdate(bugIdToUpdate, bugData, function(err, updatedBug){
+				if (err){
+					rejectFn(err);
+					return;
+				} else {
+					console.log(updatedBug);
+					resolveFn(updatedBug)
+				}
+			});
+			
+	});
 	
 }
 
-function update(bugIdToUpdate, bugData){
-	/*var bugToUpdate = list.find(function(bug){
-		return bug.id === bugIdToUpdate;
-	});*/
-
-	var bugToUpdate = list.find(bug => bug.id === bugIdToUpdate);
-
-	if (!bugToUpdate){
-		return Promise.reject(new Error('Bug not found'));
-	} else {
-		/*list = list.map(function(bug){
-			return bug.id === bugIdToUpdate ? bugData : bug;
-		});*/
-
-		list = list.map(bug => bug.id === bugIdToUpdate ? bugData : bug);
-		
-		/*return bugDb
-			.save(list)
-			.then(function(){
-				return bugData;
-			});*/
-		return bugDb
-			.save(list)
-			.then(() => bugData);
-	}
-}
-
+//to be fixed
 function remove(bugIdToDelete){
-	var bugToDelete = list.find(function(bug){
-		return bug.id === bugIdToDelete;
-	});
-	if (!bugToDelete){
-		return Promise.reject(new Error('Bug not found'));
-	} else {
-		list = list.filter(function(bug){
-			return bug.id !== bugIdToDelete;
-		});
-		return bugDb.save(list);
-	}
+	return Bug.findByIdAndRemove({ "_id" :bugIdToDelete});
 }
 
-module.exports = {
-	getAll : getAll,
-	addNew : addNew,
-	update : update,
-	remove : remove
-};
-
+module.exports = { getAll, addNew, update, remove };
