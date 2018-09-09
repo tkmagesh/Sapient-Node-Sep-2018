@@ -4,7 +4,7 @@ let mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const ObjectId = Schema.ObjectId;
 
-const conn = mongoose.createConnection('mongodb://localhost:27017/learning');
+const conn = mongoose.createConnection('mongodb://mongo/learning');
 
 const BugModel = new Schema({
 	name : String,

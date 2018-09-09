@@ -1,0 +1,19 @@
+{
+  "name": "Client-Observable",
+  "version": "1.0.0",
+  "description": "",
+  "main": "client.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "any-observable": "^0.3.0",
+    "rx-node": "^1.0.2",
+    "rxjs": "^6.3.2",
+    "split": "^1.0.1",
+    "stream-to-observable": "^0.2.0"
+  }
+}
