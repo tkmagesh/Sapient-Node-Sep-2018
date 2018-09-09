@@ -27,30 +27,38 @@ router.get('/', function(req, res, next) {
 
 router.post('/', function(req, res, next){
 	var newBugData = req.body;
-	var newBug = bugService.addNew(newBugData);
-	res.status(201).json(newBug);
+	bugService
+		.addNew(newBugData)
+		.then(function(newBug){
+			res.status(201).json(newBug);		
+		});
+	
 });
 
 
 router.put('/:id', function(req, res, next){
 	var bugIdToUpdate = parseInt(req.params.id);
-	var updatedBug = bugService.update(bugIdToUpdate, req.body);
-	if (!updatedBug){
-		res.status(404).end();
-	} else {
-		res.json(updatedBug);
-	}
+	bugService
+		.update(bugIdToUpdate, req.body)
+		.then(function(updatedBug){
+			res.json(updatedBug);	
+		})
+		.catch(function(err){
+			res.status(404).end();	
+		});
 });
 
 
 router.delete('/:id', function(req, res, next){
 	var bugIdToDelete = parseInt(req.params.id);
-	var deleteResult = bugService.remove(bugIdToDelete);
-	if (!deleteResult){
-		res.status(404).end();
-	} else {
-		res.json(deleteResult);
-	}
+	bugService
+		.remove(bugIdToDelete)
+		.then(function(deleteResult){
+			res.json(deleteResult);	
+		})
+		.catch(function(err){
+			res.status(404).end();	
+		});
 });
 
 
