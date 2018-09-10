@@ -34,25 +34,22 @@ function addNew(newBugData){
 	return newBug.save();
 }
 
-//to be fixed
+//to be fixed -> Fixed.
 function update(bugIdToUpdate, bugData){
-	return new Promise(function(resolveFn, rejectFn){
-		Bug
-			.findByIdAndUpdate(bugIdToUpdate, bugData, function(err, updatedBug){
-				if (err){
-					rejectFn(err);
-					return;
-				} else {
-					console.log(updatedBug);
-					resolveFn(updatedBug)
-				}
-			});
-			
+	return Bug.findByIdAndUpdate(bugIdToUpdate, bugData, function(err, foundDoc){
+		// .findByIdAndUpdate() returns found document to the callback, not the updated document.
+		// And we are expecting updated document in the bugRoutes, hence, we return bugData
+		// Another Option: In BugRoutes, where .then() calls function with the object received from BugService, 
+		// we can modify it to send the req.body instead which will thereby be returned in the response.
+		if (err){
+			return err;
+		} else {
+			return bugData;
+		}
 	});
-	
 }
 
-//to be fixed
+//to be fixed : Working Fine -> Deletes the document and returns the deleted document.
 function remove(bugIdToDelete){
 	return Bug.findByIdAndRemove({ "_id" :bugIdToDelete});
 }
